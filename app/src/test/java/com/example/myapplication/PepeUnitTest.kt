@@ -33,13 +33,15 @@ object Pepe {
     var bono: Bono = BonoDiezPorciento
     var faltas: Int = 0
 
-    fun basico(): Double = categoria.basico()
+    const val FALTAS_NECESARIAS_PARA_PERDER_PRESENTISMO = 20
 
-    fun bono(): Double {
+    private fun basico(): Double = categoria.basico()
+
+    private fun bono(): Double {
         return bono.bonoDesdeBasico(basico())
     }
 
-    fun presentismo(): Int {
+    private fun presentismo(): Int {
         return 100 - faltas * 5
     }
 
@@ -52,48 +54,50 @@ class PepeUnitTest {
     @Before
     fun setup() {
         Pepe.categoria = Gerente
-        Pepe.bono = BonoFijo
+        Pepe.bono = BonoCero
+        Pepe.faltas = Pepe.FALTAS_NECESARIAS_PARA_PERDER_PRESENTISMO
     }
     @Test
     fun pepe_conCategoriaGerente_gana30000DeBasico() {
         Pepe.categoria = Gerente
 
-        assertEquals(30000.0, Pepe.basico(),0.0)
+        assertEquals(30000.0, Pepe.sueldo(),0.0)
     }
 
     @Test
     fun pepe_conCategoriaCadete_gana15000DeBasico() {
         Pepe.categoria = Cadete
 
-        assertEquals(15000.0, Pepe.basico(),0.0)
+        assertEquals(15000.0, Pepe.sueldo(),0.0)
     }
 
     @Test
     fun pepe_conBonoFijo_tiene80DeBono() {
-        Pepe.bono = BonoFijo
+        val bono = BonoFijo.bonoDesdeBasico(0.0)
 
-        assertEquals(80.0, Pepe.bono(),0.0)
+        assertEquals(80.0, bono ,0.0)
     }
 
     @Test
     fun pepe_conCategoriaGerenteYBono10porc_tiene_3000DeBono(){
-        Pepe.bono = BonoDiezPorciento
+        val basico = 30000.0
+        val bono = BonoDiezPorciento.bonoDesdeBasico(basico)
 
-        assertEquals(3000.0, Pepe.bono(),0.0)
+        assertEquals(basico*0.1, bono,0.0)
     }
 
     @Test
     fun pepe_sinBono_tiene0DeBono() {
-        Pepe.bono = BonoCero
+        val bono = BonoCero.bonoDesdeBasico(.0)
 
-        assertEquals(0.0, Pepe.bono(),0.0)
+        assertEquals(0.0, bono,0.0)
     }
 
     @Test
     fun pepe_con5Faltas_tiene75PorPresentismo(){
         Pepe.faltas = 5
 
-        assertEquals(75, Pepe.presentismo())
+        assertEquals(30075.0, Pepe.sueldo(), 0.0)
     }
 
     @Test
