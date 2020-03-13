@@ -52,11 +52,11 @@ describe("Pepita", () => {
         expect(pepita.energia).toEqual(energiaOriginal - pepita.costoDeVolar(distancia))
     })
 
-    it("Puede ir a un lugar cercano si tiene energía suficiente" , () => {
+    it("Puede ir a un lugar si tiene energía suficiente" , () => {
         expect(pepita.puedeIrA(Lugar.Maschwitz())).toBeTrue()
     }) 
 
-    it("No puede ir a un lugar muy lejano si no le alcanza la energía", () => {
+    it("No puede ir a un lugar si no le alcanza la energía", () => {
         expect(pepita.puedeIrA(Lugar.Cordoba())).toBeFalse()
     })
 
