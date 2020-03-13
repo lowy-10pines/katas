@@ -28,13 +28,15 @@ object Cadete: Categoria {
 }
 
 
-data class Empleado(var categoria: Categoria, var tipoDeBono: Bono) {
+object Pepe {
+    var categoria: Categoria = Gerente
+    var bono: Bono = BonoDiezPorciento
     var faltas: Int = 0
 
     fun basico(): Double = categoria.basico()
 
     fun bono(): Double {
-        return tipoDeBono.bonoDesdeBasico(basico())
+        return bono.bonoDesdeBasico(basico())
     }
 
     fun presentismo(): Int {
@@ -47,60 +49,60 @@ data class Empleado(var categoria: Categoria, var tipoDeBono: Bono) {
 }
 
 class PepeUnitTest {
-    private lateinit var pepe: Empleado
     @Before
     fun setup() {
-        pepe = Empleado(Gerente, BonoFijo)
+        Pepe.categoria = Gerente
+        Pepe.bono = BonoFijo
     }
     @Test
     fun pepe_conCategoriaGerente_gana30000DeBasico() {
-        pepe.categoria = Gerente
+        Pepe.categoria = Gerente
 
-        assertEquals(30000.0, pepe.basico(),0.0)
+        assertEquals(30000.0, Pepe.basico(),0.0)
     }
 
     @Test
     fun pepe_conCategoriaCadete_gana15000DeBasico() {
-        pepe.categoria = Cadete
+        Pepe.categoria = Cadete
 
-        assertEquals(15000.0, pepe.basico(),0.0)
+        assertEquals(15000.0, Pepe.basico(),0.0)
     }
 
     @Test
     fun pepe_conBonoFijo_tiene80DeBono() {
-        pepe.tipoDeBono = BonoFijo
+        Pepe.bono = BonoFijo
 
-        assertEquals(80.0, pepe.bono(),0.0)
+        assertEquals(80.0, Pepe.bono(),0.0)
     }
 
     @Test
     fun pepe_conCategoriaGerenteYBono10porc_tiene_3000DeBono(){
-        pepe.tipoDeBono = BonoDiezPorciento
+        Pepe.bono = BonoDiezPorciento
 
-        assertEquals(3000.0, pepe.bono(),0.0)
+        assertEquals(3000.0, Pepe.bono(),0.0)
     }
 
     @Test
     fun pepe_sinBono_tiene0DeBono() {
-        pepe.tipoDeBono = BonoCero
+        Pepe.bono = BonoCero
 
-        assertEquals(0.0, pepe.bono(),0.0)
+        assertEquals(0.0, Pepe.bono(),0.0)
     }
 
     @Test
     fun pepe_con5Faltas_tiene75PorPresentismo(){
-        pepe.faltas = 5
+        Pepe.faltas = 5
 
-        assertEquals(75, pepe.presentismo())
+        assertEquals(75, Pepe.presentismo())
     }
 
     @Test
     fun sueldoDePepe_GerenteBono10PorcientoCon3Faltas_cobra33085Pesos() {
         // Sueldo = 30000 basico gerente + 3000 bono10% + 85 presentismo
-        pepe.categoria = Gerente
-        pepe.tipoDeBono = BonoDiezPorciento
-        pepe.faltas = 3
+        Pepe.categoria = Gerente
+        Pepe.bono = BonoDiezPorciento
+        Pepe.faltas = 3
 
-        assertEquals(33085.0, pepe.sueldo(), 0.0)
+        assertEquals(33085.0, Pepe.sueldo(), 0.0)
     }
 }
