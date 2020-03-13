@@ -4,52 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-interface Bono {
-    fun bonoDesdeBasico(base: Double): Double
-}
-object BonoFijo: Bono {
-    override fun bonoDesdeBasico(base: Double): Double = 80.0
-}
-object BonoDiezPorciento: Bono {
-    override fun bonoDesdeBasico(base: Double): Double = base * 0.1
-}
-object BonoCero: Bono {
-    override fun bonoDesdeBasico(base: Double): Double = 0.0
-}
-
-interface Categoria {
-    fun basico(): Double
-}
-object Gerente: Categoria {
-    override fun basico(): Double = 30000.0
-}
-object Cadete: Categoria {
-    override fun basico(): Double = 15000.0
-}
-
-
-object Pepe {
-    var categoria: Categoria = Gerente
-    var bono: Bono = BonoDiezPorciento
-    var faltas: Int = 0
-
-    const val FALTAS_NECESARIAS_PARA_PERDER_PRESENTISMO = 20
-
-    private fun basico(): Double = categoria.basico()
-
-    private fun bono(): Double {
-        return bono.bonoDesdeBasico(basico())
-    }
-
-    private fun presentismo(): Int {
-        return 100 - faltas * 5
-    }
-
-    fun sueldo(): Double {
-        return basico() + bono() + presentismo()
-    }
-}
-
 class PepeUnitTest {
     @Before
     fun setup() {
